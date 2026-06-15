@@ -8,7 +8,7 @@ export const defaultProductos = [
     descripcion:
       'Intenso, especiado y botanico. Pensado para servir con hielo, piel de naranja y soda.',
     notas: ['Ajenjo', 'Cascara citrica', 'Hierbas tostadas'],
-    precioUnitario: 12500,
+    precioUnitario: 10,
     stock: 24,
     color: 'red',
     activo: true,
@@ -20,7 +20,7 @@ export const defaultProductos = [
     descripcion:
       'Fresco, herbal y elegante. Ideal para aperitivos largos, tonica y rodaja de limon.',
     notas: ['Flores blancas', 'Citrus', 'Salvia'],
-    precioUnitario: 12500,
+    precioUnitario: 10,
     stock: 24,
     color: 'white',
     activo: true,
