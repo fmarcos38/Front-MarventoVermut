@@ -103,6 +103,17 @@
   font-weight: 900;
 }
 
+.admin-products__message--error {
+  color: #8f1f1f;
+  background: rgba(143, 31, 31, 0.08);
+}
+
+.admin-products__empty {
+  padding: 22px;
+  color: var(--color-muted);
+  font-weight: 800;
+}
+
 .admin-products__form {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

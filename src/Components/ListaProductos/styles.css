@@ -8,6 +8,21 @@
   gap: 20px;
 }
 
+.product-list__state {
+  border: 1px solid rgba(140, 29, 64, 0.12);
+  border-radius: 8px;
+  margin-bottom: 18px;
+  padding: 16px;
+  color: var(--color-primary-dark);
+  background: var(--color-surface);
+  font-weight: 900;
+}
+
+.product-list__state--error {
+  color: #8f1f1f;
+  background: rgba(143, 31, 31, 0.08);
+}
+
 .product-card {
   min-height: 360px;
   border: 1px solid rgba(140, 29, 64, 0.1);

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { getProductos } from '../Data/productos';
 import { cartData, userData } from '../LocalStorage';
 import { AppContext } from './AppContext';
 
@@ -22,8 +21,7 @@ const AppProvider = ({ children }) => {
     };
 
     const addToCart = (product) => {
-        const productoCatalogo = getProductos().find((item) => item.id === product.id);
-        const stockDisponible = Number(productoCatalogo?.stock ?? product.stock ?? 0);
+        const stockDisponible = Number(product.stock ?? 0);
 
         if (stockDisponible <= 0) {
             return;
@@ -51,8 +49,8 @@ const AppProvider = ({ children }) => {
 
     const updateCartItemQuantity = (id, cantidad) => {
         const cantidadFinal = Number(cantidad);
-        const productoCatalogo = getProductos().find((item) => item.id === id);
-        const stockDisponible = Number(productoCatalogo?.stock ?? 0);
+        const itemActual = cartItems.find((item) => item.id === id);
+        const stockDisponible = Number(itemActual?.stock ?? 0);
 
         if (!Number.isFinite(cantidadFinal) || cantidadFinal < 1) {
             return;

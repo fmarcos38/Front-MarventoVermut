@@ -2,9 +2,11 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import {
     createProductId,
+    createProducto,
+    deleteProducto,
+    fetchProductosAdmin,
     formatProductPrice,
-    getProductos,
-    saveProductos,
+    updateProducto,
 } from '../../Data/productos'
 import './styles.css'
 
@@ -43,10 +45,12 @@ const productToForm = (producto) => ({
 })
 
 const AdminProductos = () => {
-    const [productos, setProductos] = useState(() => getProductos())
+    const [productos, setProductos] = useState([])
     const [editingId, setEditingId] = useState('')
     const [formData, setFormData] = useState(emptyForm)
     const [message, setMessage] = useState('')
+    const [error, setError] = useState('')
+    const [isLoading, setIsLoading] = useState(true)
 
     const totals = useMemo(() => {
         const activos = productos.filter((producto) => producto.activo !== false)
@@ -63,20 +67,21 @@ const AdminProductos = () => {
     }, [productos])
 
     useEffect(() => {
-        const syncProductos = () => setProductos(getProductos())
-
-        window.addEventListener('productosChanged', syncProductos)
-        window.addEventListener('storage', syncProductos)
-
-        return () => {
-            window.removeEventListener('productosChanged', syncProductos)
-            window.removeEventListener('storage', syncProductos)
-        }
+        loadProductos()
     }, [])
 
-    const persistProductos = (nextProductos, successMessage) => {
-        setProductos(nextProductos)
-        saveProductos(nextProductos)
+    const loadProductos = async () => {
+        try {
+            setError('')
+            setProductos(await fetchProductosAdmin())
+        } catch (requestError) {
+            setError(requestError.message || 'No se pudieron cargar los productos')
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const showMessage = (successMessage) => {
         setMessage(successMessage)
         window.setTimeout(() => setMessage(''), 1800)
     }
@@ -105,7 +110,7 @@ const AdminProductos = () => {
         }))
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
 
         const producto = normalizeForm(formData)
@@ -115,52 +120,67 @@ const AdminProductos = () => {
             return
         }
 
-        const nextProductos = editingId === 'nuevo'
-            ? [...productos, producto]
-            : productos.map((currentProduct) => (
-                currentProduct.id === editingId ? producto : currentProduct
-            ))
+        try {
+            setError('')
 
-        persistProductos(nextProductos, editingId === 'nuevo' ? 'Producto creado.' : 'Producto actualizado.')
-        cancelEdit()
+            if (editingId === 'nuevo') {
+                await createProducto(producto)
+                showMessage('Producto creado.')
+            } else {
+                await updateProducto(editingId, producto)
+                showMessage('Producto actualizado.')
+            }
+
+            cancelEdit()
+            await loadProductos()
+        } catch (requestError) {
+            setError(requestError.message || 'No se pudo guardar el producto')
+        }
     }
 
-    const handleDelete = (producto) => {
+    const handleDelete = async (producto) => {
         const shouldDelete = window.confirm(`Eliminar ${producto.nombre}? Esta accion lo quita del catalogo.`)
 
         if (!shouldDelete) {
             return
         }
 
-        persistProductos(
-            productos.filter((currentProduct) => currentProduct.id !== producto.id),
-            'Producto eliminado.'
-        )
+        try {
+            setError('')
+            await deleteProducto(producto.id)
+            showMessage('Producto eliminado.')
+            await loadProductos()
+        } catch (requestError) {
+            setError(requestError.message || 'No se pudo eliminar el producto')
+        }
     }
 
-    const updateStock = (producto, amount) => {
-        const nextProductos = productos.map((currentProduct) => {
-            if (currentProduct.id !== producto.id) {
-                return currentProduct
-            }
-
-            return {
-                ...currentProduct,
-                stock: Math.max(0, Number(currentProduct.stock || 0) + amount),
-            }
-        })
-
-        persistProductos(nextProductos, 'Stock actualizado.')
+    const updateStock = async (producto, amount) => {
+        try {
+            setError('')
+            await updateProducto(producto.id, {
+                ...producto,
+                stock: Math.max(0, Number(producto.stock || 0) + amount),
+            })
+            showMessage('Stock actualizado.')
+            await loadProductos()
+        } catch (requestError) {
+            setError(requestError.message || 'No se pudo actualizar el stock')
+        }
     }
 
-    const toggleActivo = (producto) => {
-        const nextProductos = productos.map((currentProduct) => (
-            currentProduct.id === producto.id
-                ? { ...currentProduct, activo: currentProduct.activo === false }
-                : currentProduct
-        ))
-
-        persistProductos(nextProductos, 'Estado actualizado.')
+    const toggleActivo = async (producto) => {
+        try {
+            setError('')
+            await updateProducto(producto.id, {
+                ...producto,
+                activo: producto.activo === false,
+            })
+            showMessage('Estado actualizado.')
+            await loadProductos()
+        } catch (requestError) {
+            setError(requestError.message || 'No se pudo actualizar el estado')
+        }
     }
 
     return (
@@ -193,6 +213,7 @@ const AdminProductos = () => {
             </div>
 
             {message && <div className="admin-products__message">{message}</div>}
+            {error && <div className="admin-products__message admin-products__message--error">{error}</div>}
 
             {editingId && (
                 <form className="admin-products__form" onSubmit={handleSubmit}>
@@ -245,6 +266,11 @@ const AdminProductos = () => {
             )}
 
             <div className="admin-products__panel">
+                {isLoading && <div className="admin-products__empty">Cargando productos...</div>}
+                {!isLoading && !error && !productos.length && (
+                    <div className="admin-products__empty">Todavia no hay productos cargados.</div>
+                )}
+                {!isLoading && Boolean(productos.length) && (
                 <div className="admin-products__table-wrap">
                     <table className="admin-products__table">
                         <thead>
@@ -291,6 +317,7 @@ const AdminProductos = () => {
                         </tbody>
                     </table>
                 </div>
+                )}
             </div>
         </section>
     )

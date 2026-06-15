@@ -1,7 +1,6 @@
 import { useContext, useState } from 'react'
 import { Link } from 'react-router'
 import { AppContext } from '../../Context/AppContext'
-import { getProductos } from '../../Data/productos'
 import { URL } from '../../Urls'
 import './styles.css'
 
@@ -41,9 +40,8 @@ const CarritoPage = () => {
         (total, item) => total + item.precioUnitario * item.cantidad,
         0
     )
-    const getStockDisponible = (id, fallbackStock) => {
-        const producto = getProductos().find((currentProduct) => currentProduct.id === id)
-        return Number(producto?.stock ?? fallbackStock ?? 0)
+    const getStockDisponible = (_id, fallbackStock) => {
+        return Number(fallbackStock ?? 0)
     }
 
     const handleCheckoutDataChange = (event) => {

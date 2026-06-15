@@ -1,26 +1,29 @@
 import { useContext, useEffect, useState } from 'react'
 import productImage from '../../assets/vermuts-productos-marvento.png'
 import { AppContext } from '../../Context/AppContext'
-import { formatProductPrice, getProductos } from '../../Data/productos'
+import { fetchProductos, formatProductPrice } from '../../Data/productos'
 import './styles.css'
 
 const ListaProductos = () => {
   const { addToCart } = useContext(AppContext)
-  const [productos, setProductos] = useState(() => getProductos().filter((producto) => producto.activo !== false))
+  const [productos, setProductos] = useState([])
   const [addedProductId, setAddedProductId] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
 
   useEffect(() => {
-    const syncProductos = () => {
-      setProductos(getProductos().filter((producto) => producto.activo !== false))
+    const loadProductos = async () => {
+      try {
+        setError('')
+        setProductos(await fetchProductos())
+      } catch (requestError) {
+        setError(requestError.message || 'No se pudieron cargar los productos')
+      } finally {
+        setIsLoading(false)
+      }
     }
 
-    window.addEventListener('productosChanged', syncProductos)
-    window.addEventListener('storage', syncProductos)
-
-    return () => {
-      window.removeEventListener('productosChanged', syncProductos)
-      window.removeEventListener('storage', syncProductos)
-    }
+    loadProductos()
   }, [])
 
   const handleAddToCart = (producto) => {
@@ -44,6 +47,8 @@ const ListaProductos = () => {
 
   return (
     <section className="product-list">
+      {isLoading && <div className="product-list__state">Cargando productos...</div>}
+      {error && <div className="product-list__state product-list__state--error">{error}</div>}
       <div className="product-list__items">
         {productos.map((producto, index) => (
           <article className={`product-card product-card--${producto.color}`} key={producto.id}>
