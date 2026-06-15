@@ -14,6 +14,7 @@ import CheckoutResultado from './Pages/CheckoutResultado'
 import AdminInformes from './Pages/AdminInformes'
 import AdminPedidos from './Pages/AdminPedidos'
 import AdminProductoNuevo from './Pages/AdminProductoNuevo'
+import AdminProductos from './Pages/AdminProductos'
 import './App.css'
 
 const RutaPrivada = ({ children, rolesPermitidos }) => {
@@ -59,6 +60,14 @@ function App() {
             element={
               <RutaPrivada rolesPermitidos={['ADMIN', 'EMPLEADO']}>
                 <AdminPedidos />
+              </RutaPrivada>
+            }
+          />
+          <Route
+            path="/admin/productos"
+            element={
+              <RutaPrivada rolesPermitidos={['ADMIN', 'EMPLEADO']}>
+                <AdminProductos />
               </RutaPrivada>
             }
           />

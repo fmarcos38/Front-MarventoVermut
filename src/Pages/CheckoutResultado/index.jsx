@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { AppContext } from '../../Context/AppContext'
+import { getProductos, saveProductos } from '../../Data/productos'
 import { URL } from '../../Urls'
 import './styles.css'
 
@@ -30,7 +31,7 @@ const formatPrice = (value) =>
     }).format(value || 0)
 
 const CheckoutResultado = ({ status }) => {
-    const { clearCart } = useContext(AppContext)
+    const { cartItems, clearCart } = useContext(AppContext)
     const [searchParams] = useSearchParams()
     const [pedido, setPedido] = useState(null)
     const [error, setError] = useState('')
@@ -41,9 +42,23 @@ const CheckoutResultado = ({ status }) => {
     useEffect(() => {
         if (status === 'success' && !didClearCart.current) {
             didClearCart.current = true
+            const productosActualizados = getProductos().map((producto) => {
+                const itemComprado = cartItems.find((item) => item.id === producto.id)
+
+                if (!itemComprado) {
+                    return producto
+                }
+
+                return {
+                    ...producto,
+                    stock: Math.max(0, Number(producto.stock || 0) - Number(itemComprado.cantidad || 0)),
+                }
+            })
+
+            saveProductos(productosActualizados)
             clearCart()
         }
-    }, [status, clearCart])
+    }, [status, cartItems, clearCart])
 
     useEffect(() => {
         const registrarRetorno = async () => {

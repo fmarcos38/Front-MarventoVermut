@@ -14,7 +14,7 @@ const navLinks = [
 const adminLinks = [
   { label: 'Informes', href: '/admin/informes' },
   { label: 'Pedidos', href: '/admin/pedidos' },
-  { label: 'Nuevo producto', href: '/admin/productos/nuevo' },
+  { label: 'Productos', href: '/admin/productos' },
 ]
 
 const socialLinks = [

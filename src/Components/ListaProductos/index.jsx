@@ -1,45 +1,41 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import productImage from '../../assets/vermuts-productos-marvento.png'
 import { AppContext } from '../../Context/AppContext'
+import { formatProductPrice, getProductos } from '../../Data/productos'
 import './styles.css'
-
-const productos = [
-  {
-    id: 'rojo',
-    nombre: 'Marvento Rojo',
-    tipo: 'Vermut rosso',
-    descripcion:
-      'Intenso, especiado y botanico. Pensado para servir con hielo, piel de naranja y soda.',
-    notas: ['Ajenjo', 'Cascara citrica', 'Hierbas tostadas'],
-    precio: '$ 12.500',
-    precioUnitario: 12500,
-    color: 'red',
-  },
-  {
-    id: 'bianco',
-    nombre: 'Marvento Bianco',
-    tipo: 'Vermut blanco seco',
-    descripcion:
-      'Fresco, herbal y elegante. Ideal para aperitivos largos, tonica y rodaja de limon.',
-    notas: ['Flores blancas', 'Citrus', 'Salvia'],
-    precio: '$ 12.500',
-    precioUnitario: 12500,
-    color: 'white',
-  },
-]
 
 const ListaProductos = () => {
   const { addToCart } = useContext(AppContext)
+  const [productos, setProductos] = useState(() => getProductos().filter((producto) => producto.activo !== false))
   const [addedProductId, setAddedProductId] = useState('')
 
+  useEffect(() => {
+    const syncProductos = () => {
+      setProductos(getProductos().filter((producto) => producto.activo !== false))
+    }
+
+    window.addEventListener('productosChanged', syncProductos)
+    window.addEventListener('storage', syncProductos)
+
+    return () => {
+      window.removeEventListener('productosChanged', syncProductos)
+      window.removeEventListener('storage', syncProductos)
+    }
+  }, [])
+
   const handleAddToCart = (producto) => {
+    if (producto.stock <= 0) {
+      return
+    }
+
     addToCart({
       id: producto.id,
       nombre: producto.nombre,
       tipo: producto.tipo,
-      precio: producto.precio,
+      precio: formatProductPrice(producto.precioUnitario),
       precioUnitario: producto.precioUnitario,
       color: producto.color,
+      stock: producto.stock,
       image: productImage,
     })
     setAddedProductId(producto.id)
@@ -49,10 +45,10 @@ const ListaProductos = () => {
   return (
     <section className="product-list">
       <div className="product-list__items">
-        {productos.map((producto) => (
+        {productos.map((producto, index) => (
           <article className={`product-card product-card--${producto.color}`} key={producto.id}>
             <div className="product-card__content">
-              <div className="product-card__number">{producto.id === 'rojo' ? '01' : '02'}</div>
+              <div className="product-card__number">{String(index + 1).padStart(2, '0')}</div>
               <div>
                 <span className="product-card__type">{producto.tipo}</span>
                 <h2>{producto.nombre}</h2>
@@ -60,15 +56,24 @@ const ListaProductos = () => {
               </div>
 
               <ul className="product-card__notes">
-                {producto.notas.map((nota) => (
+                {(producto.notas || []).map((nota) => (
                   <li key={nota}>{nota}</li>
                 ))}
               </ul>
 
               <div className="product-card__footer">
-                <strong>{producto.precio}</strong>
-                <button type="button" onClick={() => handleAddToCart(producto)}>
-                  {addedProductId === producto.id ? 'Agregado' : 'Agregar'}
+                <div>
+                  <strong>{formatProductPrice(producto.precioUnitario)}</strong>
+                  <span className="product-card__stock">
+                    {producto.stock > 0 ? `${producto.stock} en stock` : 'Sin stock'}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleAddToCart(producto)}
+                  disabled={producto.stock <= 0}
+                >
+                  {producto.stock <= 0 ? 'Sin stock' : addedProductId === producto.id ? 'Agregado' : 'Agregar'}
                 </button>
               </div>
             </div>

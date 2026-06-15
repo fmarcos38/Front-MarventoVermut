@@ -124,8 +124,17 @@
 
 .product-card__footer strong {
   color: var(--color-ink);
+  display: block;
   font-family: var(--font-display);
   font-size: 30px;
+}
+
+.product-card__stock {
+  display: block;
+  margin-top: 2px;
+  color: var(--color-muted);
+  font-size: 13px;
+  font-weight: 800;
 }
 
 .product-card__footer button {
@@ -137,6 +146,11 @@
   background: var(--color-primary);
   font-weight: 900;
   cursor: pointer;
+}
+
+.product-card__footer button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 
 .product-card__footer button:hover {

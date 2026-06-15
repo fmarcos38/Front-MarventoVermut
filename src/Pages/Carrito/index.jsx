@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react'
 import { Link } from 'react-router'
 import { AppContext } from '../../Context/AppContext'
+import { getProductos } from '../../Data/productos'
 import { URL } from '../../Urls'
 import './styles.css'
 
@@ -40,6 +41,10 @@ const CarritoPage = () => {
         (total, item) => total + item.precioUnitario * item.cantidad,
         0
     )
+    const getStockDisponible = (id, fallbackStock) => {
+        const producto = getProductos().find((currentProduct) => currentProduct.id === id)
+        return Number(producto?.stock ?? fallbackStock ?? 0)
+    }
 
     const handleCheckoutDataChange = (event) => {
         const { name, value } = event.target
@@ -59,6 +64,12 @@ const CarritoPage = () => {
 
             if (faltaCampo) {
                 throw new Error('Completa los datos de contacto y envio para continuar')
+            }
+
+            const itemSinStock = cartItems.find((item) => item.cantidad > getStockDisponible(item.id, item.stock))
+
+            if (itemSinStock) {
+                throw new Error(`No hay stock suficiente de ${itemSinStock.nombre}`)
             }
 
             const response = await fetch(`${URL}/mercadopago/preferencia`, {
@@ -131,8 +142,11 @@ const CarritoPage = () => {
 
             <div className="cart-page__layout">
                 <div className="cart-list">
-                    {cartItems.map((item) => (
-                        <article className={`cart-item cart-item--${item.color}`} key={item.id}>
+                    {cartItems.map((item) => {
+                        const stockDisponible = getStockDisponible(item.id, item.stock)
+
+                        return (
+                            <article className={`cart-item cart-item--${item.color}`} key={item.id}>
                             <div className="cart-item__image" aria-hidden="true">
                                 <img src={item.image} alt="" />
                             </div>
@@ -141,6 +155,7 @@ const CarritoPage = () => {
                                 <span>{item.tipo}</span>
                                 <h2>{item.nombre}</h2>
                                 <strong>{formatPrice(item.precioUnitario)}</strong>
+                                <small>{stockDisponible > 0 ? `${stockDisponible} disponibles` : 'Sin stock disponible'}</small>
                             </div>
 
                             <div className="cart-item__quantity" aria-label={`Cantidad de ${item.nombre}`}>
@@ -155,12 +170,14 @@ const CarritoPage = () => {
                                 <input
                                     type="number"
                                     min="1"
+                                    max={stockDisponible}
                                     value={item.cantidad}
                                     onChange={(event) => updateCartItemQuantity(item.id, event.target.value)}
                                 />
                                 <button
                                     type="button"
                                     onClick={() => updateCartItemQuantity(item.id, item.cantidad + 1)}
+                                    disabled={item.cantidad >= stockDisponible}
                                     aria-label="Sumar unidad"
                                 >
                                     +
@@ -174,8 +191,9 @@ const CarritoPage = () => {
                                     Eliminar
                                 </button>
                             </div>
-                        </article>
-                    ))}
+                            </article>
+                        )
+                    })}
                 </div>
 
                 <aside className="cart-summary">

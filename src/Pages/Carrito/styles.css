@@ -105,6 +105,14 @@
     color: var(--color-ink);
 }
 
+.cart-item__content small {
+    display: block;
+    margin-top: 4px;
+    color: var(--color-muted);
+    font-size: 13px;
+    font-weight: 800;
+}
+
 .cart-item__quantity {
     border: 1px solid rgba(140, 29, 64, 0.14);
     border-radius: 999px;

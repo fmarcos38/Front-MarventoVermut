@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { getProductos } from '../Data/productos';
 import { cartData, userData } from '../LocalStorage';
 import { AppContext } from './AppContext';
 
@@ -21,9 +22,20 @@ const AppProvider = ({ children }) => {
     };
 
     const addToCart = (product) => {
+        const productoCatalogo = getProductos().find((item) => item.id === product.id);
+        const stockDisponible = Number(productoCatalogo?.stock ?? product.stock ?? 0);
+
+        if (stockDisponible <= 0) {
+            return;
+        }
+
         const existe = cartItems.find((item) => item.id === product.id);
 
         if (existe) {
+            if (existe.cantidad >= stockDisponible) {
+                return;
+            }
+
             guardarCarrito(
                 cartItems.map((item) =>
                     item.id === product.id
@@ -34,19 +46,26 @@ const AppProvider = ({ children }) => {
             return;
         }
 
-        guardarCarrito([...cartItems, { ...product, cantidad: 1 }]);
+        guardarCarrito([...cartItems, { ...product, stock: stockDisponible, cantidad: 1 }]);
     };
 
     const updateCartItemQuantity = (id, cantidad) => {
         const cantidadFinal = Number(cantidad);
+        const productoCatalogo = getProductos().find((item) => item.id === id);
+        const stockDisponible = Number(productoCatalogo?.stock ?? 0);
 
         if (!Number.isFinite(cantidadFinal) || cantidadFinal < 1) {
             return;
         }
 
+        if (stockDisponible <= 0) {
+            removeFromCart(id);
+            return;
+        }
+
         guardarCarrito(
             cartItems.map((item) =>
-                item.id === id ? { ...item, cantidad: cantidadFinal } : item
+                item.id === id ? { ...item, stock: stockDisponible, cantidad: Math.min(cantidadFinal, stockDisponible) } : item
             )
         );
     };

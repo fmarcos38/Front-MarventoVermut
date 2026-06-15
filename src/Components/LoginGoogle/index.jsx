@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router'
 import { URL } from '../../Urls'
 
 const googleScriptUrl = 'https://accounts.google.com/gsi/client'
-let initializedClientId = ''
 
 const LoginGoogle = () => {
     const buttonRef = useRef(null)
@@ -20,40 +19,6 @@ const LoginGoogle = () => {
 
         let scriptElement = null
 
-        window.marventoGoogleLoginCallback = async ({ credential }) => {
-            try {
-                setMessage('')
-
-                if (!URL) {
-                    setMessage('Falta configurar la URL del servidor.')
-                    return
-                }
-
-                const response = await fetch(`${URL}/auth/login/google`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ credential }),
-                })
-
-                const text = await response.text()
-                const result = text ? JSON.parse(text) : {}
-
-                if (!response.ok) {
-                    setMessage(result.message || 'No se pudo ingresar con Google.')
-                    return
-                }
-
-                localStorage.setItem('userData', JSON.stringify(result.user))
-                window.dispatchEvent(
-                    new CustomEvent('userChanged', { detail: result.user })
-                )
-                navigate('/')
-            } catch (error) {
-                console.error('Error Google login:', error)
-                setMessage('Error de conexion con el servidor.')
-            }
-        }
-
         const initializeGoogle = () => {
             const googleClient = window.google?.accounts?.id
 
@@ -64,13 +29,35 @@ const LoginGoogle = () => {
                 return
             }
 
-            if (initializedClientId !== clientId) {
-                googleClient.initialize({
-                    client_id: clientId,
-                    callback: (...args) => window.marventoGoogleLoginCallback?.(...args),
-                })
-                initializedClientId = clientId
-            }
+            googleClient.initialize({
+                client_id: clientId,
+                callback: async ({ credential }) => {
+                    try {
+                        setMessage('')
+                        const response = await fetch(`${URL}/auth/login/google`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ credential }),
+                        })
+
+                        const result = await response.json()
+
+                        if (!response.ok) {
+                            setMessage(result.message || 'No se pudo ingresar con Google.')
+                            return
+                        }
+
+                        localStorage.setItem('userData', JSON.stringify(result.user))
+                        window.dispatchEvent(
+                            new CustomEvent('userChanged', { detail: result.user })
+                        )
+                        navigate('/')
+                    } catch (error) {
+                        console.error('Error Google login:', error)
+                        setMessage('Error de conexion con el servidor.')
+                    }
+                },
+            })
 
             buttonRef.current.innerHTML = ''
             googleClient.renderButton(buttonRef.current, {
