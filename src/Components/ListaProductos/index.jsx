@@ -1,12 +1,15 @@
 import { useContext, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import productImage from '../../assets/vermuts-productos-marvento.png'
 import { AppContext } from '../../Context/AppContext'
-import { fetchProductos, formatProductPrice } from '../../Data/productos'
+import { formatProductPrice } from '../../Helpers/productos'
+import { getProductos } from '../../Redux/Actions'
 import './styles.css'
 
 const ListaProductos = () => {
   const { addToCart } = useContext(AppContext)
-  const [productos, setProductos] = useState([])
+  const dispatch = useDispatch()
+  const productos = useSelector((state) => state.app.productos)
   const [addedProductId, setAddedProductId] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
@@ -15,7 +18,7 @@ const ListaProductos = () => {
     const loadProductos = async () => {
       try {
         setError('')
-        setProductos(await fetchProductos())
+        await dispatch(getProductos())
       } catch (requestError) {
         setError(requestError.message || 'No se pudieron cargar los productos')
       } finally {

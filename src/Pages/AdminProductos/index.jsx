@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router'
 import {
-    createProductId,
-    createProducto,
-    deleteProducto,
-    fetchProductosAdmin,
-    formatProductPrice,
-    updateProducto,
-} from '../../Data/productos'
+    crearProducto,
+    eliminarProducto,
+    getProductosAdmin,
+    modificarProducto,
+} from '../../Redux/Actions'
+import { createProductId, formatProductPrice } from '../../Helpers/productos'
 import './styles.css'
 
 const emptyForm = {
@@ -45,7 +45,8 @@ const productToForm = (producto) => ({
 })
 
 const AdminProductos = () => {
-    const [productos, setProductos] = useState([])
+    const dispatch = useDispatch()
+    const productos = useSelector((state) => state.app.productosAdmin)
     const [editingId, setEditingId] = useState('')
     const [formData, setFormData] = useState(emptyForm)
     const [message, setMessage] = useState('')
@@ -73,7 +74,7 @@ const AdminProductos = () => {
     const loadProductos = async () => {
         try {
             setError('')
-            setProductos(await fetchProductosAdmin())
+            await dispatch(getProductosAdmin())
         } catch (requestError) {
             setError(requestError.message || 'No se pudieron cargar los productos')
         } finally {
@@ -124,10 +125,10 @@ const AdminProductos = () => {
             setError('')
 
             if (editingId === 'nuevo') {
-                await createProducto(producto)
+                await dispatch(crearProducto(producto))
                 showMessage('Producto creado.')
             } else {
-                await updateProducto(editingId, producto)
+                await dispatch(modificarProducto(editingId, producto))
                 showMessage('Producto actualizado.')
             }
 
@@ -147,7 +148,7 @@ const AdminProductos = () => {
 
         try {
             setError('')
-            await deleteProducto(producto.id)
+            await dispatch(eliminarProducto(producto.id))
             showMessage('Producto eliminado.')
             await loadProductos()
         } catch (requestError) {
@@ -158,10 +159,10 @@ const AdminProductos = () => {
     const updateStock = async (producto, amount) => {
         try {
             setError('')
-            await updateProducto(producto.id, {
+            await dispatch(modificarProducto(producto.id, {
                 ...producto,
                 stock: Math.max(0, Number(producto.stock || 0) + amount),
-            })
+            }))
             showMessage('Stock actualizado.')
             await loadProductos()
         } catch (requestError) {
@@ -172,10 +173,10 @@ const AdminProductos = () => {
     const toggleActivo = async (producto) => {
         try {
             setError('')
-            await updateProducto(producto.id, {
+            await dispatch(modificarProducto(producto.id, {
                 ...producto,
                 activo: producto.activo === false,
-            })
+            }))
             showMessage('Estado actualizado.')
             await loadProductos()
         } catch (requestError) {
