@@ -52,6 +52,7 @@ const AdminProductos = () => {
     const [message, setMessage] = useState('')
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(true)
+    const [productToDelete, setProductToDelete] = useState(null)
 
     const totals = useMemo(() => {
         const activos = productos.filter((producto) => producto.activo !== false)
@@ -84,7 +85,7 @@ const AdminProductos = () => {
 
     const showMessage = (successMessage) => {
         setMessage(successMessage)
-        window.setTimeout(() => setMessage(''), 1800)
+        window.setTimeout(() => setMessage(''), 2400)
     }
 
     const startEdit = (producto) => {
@@ -116,8 +117,8 @@ const AdminProductos = () => {
 
         const producto = normalizeForm(formData)
 
-        if (!producto.nombre || !producto.tipo || !producto.descripcion || producto.precioUnitario <= 0) {
-            setMessage('Completa nombre, tipo, descripcion y precio para guardar.')
+        if (!producto.nombre || !producto.tipo || producto.precioUnitario <= 0) {
+            setMessage('Completa nombre, tipo y precio para guardar.')
             return
         }
 
@@ -126,10 +127,10 @@ const AdminProductos = () => {
 
             if (editingId === 'nuevo') {
                 await dispatch(crearProducto(producto))
-                showMessage('Producto creado.')
+                showMessage('Producto creado con exito.')
             } else {
                 await dispatch(modificarProducto(editingId, producto))
-                showMessage('Producto actualizado.')
+                showMessage('Producto editado con exito.')
             }
 
             cancelEdit()
@@ -140,20 +141,25 @@ const AdminProductos = () => {
     }
 
     const handleDelete = async (producto) => {
-        const shouldDelete = window.confirm(`Eliminar ${producto.nombre}? Esta accion lo quita del catalogo.`)
+        setProductToDelete(producto)
+    }
 
-        if (!shouldDelete) {
-            return
-        }
+    const confirmDelete = async () => {
+        if (!productToDelete) return
 
         try {
             setError('')
-            await dispatch(eliminarProducto(producto.id))
-            showMessage('Producto eliminado.')
+            await dispatch(eliminarProducto(productToDelete.id))
+            showMessage('Producto eliminado con exito.')
+            setProductToDelete(null)
             await loadProductos()
         } catch (requestError) {
             setError(requestError.message || 'No se pudo eliminar el producto')
         }
+    }
+
+    const cancelDelete = () => {
+        setProductToDelete(null)
     }
 
     const updateStock = async (producto, amount) => {
@@ -215,6 +221,20 @@ const AdminProductos = () => {
 
             {message && <div className="admin-products__message">{message}</div>}
             {error && <div className="admin-products__message admin-products__message--error">{error}</div>}
+            {productToDelete && (
+                <div className="admin-products__confirm" role="alertdialog" aria-modal="false">
+                    <div className="admin-products__confirm-panel">
+                        <div>
+                            <strong>Desea eliminar?</strong>
+                            <span>{productToDelete.nombre}</span>
+                        </div>
+                        <div className="admin-products__confirm-actions">
+                            <button type="button" onClick={cancelDelete}>Cancelar</button>
+                            <button type="button" onClick={confirmDelete}>Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {editingId && (
                 <form className="admin-products__form" onSubmit={handleSubmit}>

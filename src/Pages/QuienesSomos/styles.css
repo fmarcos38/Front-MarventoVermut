@@ -33,7 +33,7 @@
   max-width: 720px;
   color: var(--color-ink);
   font-size: clamp(48px, 8vw, 104px);
-  line-height: 0.9;
+  line-height: 0.84;
 }
 
 .about-hero__copy p {
@@ -84,7 +84,7 @@
 
 .about-hero__visual img {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 16 / 11;
   border-radius: 38px;
   object-fit: cover;
   box-shadow: var(--shadow-soft);
@@ -233,7 +233,7 @@
   color: var(--color-surface);
   background:
     linear-gradient(135deg, rgba(19, 15, 12, 0.74), rgba(140, 29, 64, 0.82)),
-    url('../../assets/quienes-somos-marvento.png') center / cover;
+    url('../../assets/marvento-historia.jpg') center / cover;
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
   gap: 34px;

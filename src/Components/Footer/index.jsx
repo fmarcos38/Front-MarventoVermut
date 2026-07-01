@@ -1,55 +1,52 @@
-import { Link } from 'react-router'
 import './style.css'
 
 const Footer = () => {
   return (
-    <footer className="footer">
+    <footer className="footer" id="footer">
       <div className="footer__inner">
-        <section className="footer__brand">
-          <Link className="footer__logo" to="/">
-            Marvento
-          </Link>
-          <p>Vermut argentino para sobremesas, encuentros y barras con identidad.</p>
-          <div className="footer__social" aria-label="Redes sociales">
-            <a href="https://www.instagram.com/marventovermut/" target="_blank" rel="noreferrer">
-              Instagram
-            </a>
-            <a href="https://www.facebook.com/" target="_blank" rel="noreferrer">
-              Facebook
-            </a>
-            <a href="https://wa.me/" target="_blank" rel="noreferrer">
-              WhatsApp
-            </a>
-          </div>
+        <section className="footer__column footer__location" aria-label="Casa Talina">
+          <h2>Casa Talina<span aria-hidden="true">{'\u00ae'}</span></h2>
+          <p>
+            Bolivar 6171, Mar del Plata
+            <br />
+            Buenos Aires, Argentina
+          </p>
+          <div className="footer__rule" />
+          <a href="tel:+5492234553310">Contacto: +54 9 2234553310</a>
         </section>
 
-        <div className="footer__content">
-          <nav className="footer__group" aria-label="Tienda">
-            <h3>Tienda</h3>
-            <Link to="/productos">Vermuts</Link>
-            <Link to="/carrito">Carrito</Link>
-            <Link to="/contacto">Contacto</Link>
-          </nav>
+        <section className="footer__column footer__social" aria-label="Redes sociales">
+          <a href="https://www.instagram.com/marventovermut/" target="_blank" rel="noreferrer">
+            <span className="footer__icon">IG</span>
+            @marventovermut
+          </a>
+          <a href="https://www.facebook.com/" target="_blank" rel="noreferrer">
+            <span className="footer__icon">f</span>
+            marventovermut
+          </a>
+          <a href="https://www.instagram.com/casatalina/" target="_blank" rel="noreferrer">
+            <span className="footer__icon">IG</span>
+            @casatalina
+          </a>
+          <a href="https://wa.me/5492234553310" target="_blank" rel="noreferrer">
+            <span className="footer__icon">WA</span>
+            +54 9 2234553310
+          </a>
+        </section>
 
-          <nav className="footer__group" aria-label="Marca">
-            <h3>Marca</h3>
-            <Link to="/quienes-somos">Quienes Somos</Link>
-            <Link to="/faq">Preguntas frecuentes</Link>
-            <Link to="/envios">Envios</Link>
-          </nav>
-
-          <address className="footer__group footer__contact">
-            <h3>Contacto</h3>
-            <a href="mailto:info@marventovermut.com">info@marventovermut.com</a>
-            <a href="https://wa.me/" target="_blank" rel="noreferrer">Atencion por WhatsApp</a>
-            <span>Argentina</span>
-          </address>
-        </div>
+        <section className="footer__column footer__payments" aria-label="Medios de pago">
+          <p>
+            Todos los medios de pago
+            <br />
+            Compra segura
+          </p>
+          <div className="footer__rule" />
+          <a href="mailto:info@marvento.com.ar">info@marvento.com.ar</a>
+        </section>
       </div>
 
-      <div className="footer__bottom">
-        <span>Marvento Vermut</span>
-        <span>Beber con moderacion. Prohibida su venta a menores de 18 anos.</span>
+      <div className="footer__brand" aria-hidden="true">
+        Marvento
       </div>
     </footer>
   )

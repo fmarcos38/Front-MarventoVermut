@@ -3,7 +3,7 @@
   height: 44px;
   border: 0;
   border-radius: 999px;
-  background: rgba(140, 29, 64, 0.08);
+  background: rgba(240, 216, 172, 0.12);
   display: none;
   align-items: center;
   justify-content: center;
@@ -16,7 +16,7 @@
   width: 20px;
   height: 2px;
   border-radius: 999px;
-  background: var(--color-primary-dark);
+  background: var(--secondary);
   transition:
     transform 0.2s ease,
     opacity 0.2s ease;
@@ -34,7 +34,7 @@
   transform: translateY(-7px) rotate(-45deg);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .hamburger {
     display: inline-flex;
   }

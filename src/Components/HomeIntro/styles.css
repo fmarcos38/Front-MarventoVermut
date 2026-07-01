@@ -1,0 +1,32 @@
+.home-intro {
+  background: var(--primary);
+  color: var(--secondary);
+  padding: clamp(52px, 7vw, 92px) max(28px, calc((100vw - 1180px) / 2));
+}
+
+.home-intro p {
+  max-width: 1180px;
+  margin: 0 auto;
+  color: inherit;
+  font-size: clamp(25px, 3.2vw, 34px);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.18;
+  text-align: center;
+}
+
+.home-intro strong {
+  color: var(--white);
+  font-weight: 900;
+}
+
+@media (max-width: 760px) {
+  .home-intro {
+    padding: 42px 22px;
+  }
+
+  .home-intro p {
+    font-size: clamp(22px, 7vw, 32px);
+    text-align: left;
+  }
+}

@@ -1,4 +1,4 @@
-import heroImage from '../../assets/quienes-somos-marvento.png'
+import heroImage from '../../assets/marvento-historia.jpg'
 import './styles.css'
 
 function QuienesSomos() {

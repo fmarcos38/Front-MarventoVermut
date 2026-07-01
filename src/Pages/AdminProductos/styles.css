@@ -15,7 +15,7 @@
 .admin-products__metrics span {
   color: var(--color-gold);
   font-size: 13px;
-  font-weight: 900;
+  font-weight: 400;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -48,7 +48,7 @@
   border: 0;
   border-radius: 999px;
   cursor: pointer;
-  font-weight: 900;
+  font-weight: 400;
   padding: 12px 16px;
   text-decoration: none;
 }
@@ -77,7 +77,7 @@
 .admin-products__metrics article,
 .admin-products__panel,
 .admin-products__form,
-.admin-products__message {
+.admin-products__confirm-panel {
   border: 1px solid rgba(140, 29, 64, 0.12);
   border-radius: 8px;
   background: var(--color-surface);
@@ -97,21 +97,83 @@
 }
 
 .admin-products__message {
-  margin-bottom: 18px;
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 80;
+  width: min(360px, calc(100% - 36px));
+  border: 1px solid rgba(3, 43, 63, 0.16);
+  border-radius: 8px;
   padding: 14px 16px;
-  color: var(--color-primary-dark);
-  font-weight: 900;
+  color: var(--primary);
+  background: var(--secondary);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+  font-weight: 400;
 }
 
 .admin-products__message--error {
   color: #8f1f1f;
-  background: rgba(143, 31, 31, 0.08);
+  background: #fff7f7;
+}
+
+.admin-products__confirm {
+  position: fixed;
+  inset: 0;
+  z-index: 75;
+  padding: 20px;
+  background: rgba(0, 42, 58, 0.42);
+  display: grid;
+  place-items: center;
+}
+
+.admin-products__confirm-panel {
+  width: min(420px, 100%);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.admin-products__confirm strong,
+.admin-products__confirm span {
+  display: block;
+  color: var(--color-primary-dark);
+  font-weight: 400;
+}
+
+.admin-products__confirm span {
+  margin-top: 4px;
+  color: var(--color-muted);
+}
+
+.admin-products__confirm-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-products__confirm-actions button {
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 400;
+  padding: 10px 14px;
+}
+
+.admin-products__confirm-actions button:first-child {
+  color: var(--color-primary-dark);
+  background: rgba(3, 43, 63, 0.08);
+}
+
+.admin-products__confirm-actions button:last-child {
+  color: var(--color-surface);
+  background: #8f1f1f;
 }
 
 .admin-products__empty {
   padding: 22px;
   color: var(--color-muted);
-  font-weight: 800;
+  font-weight: 400;
 }
 
 .admin-products__form {
@@ -146,7 +208,7 @@
   color: var(--color-primary-dark);
   background: rgba(140, 29, 64, 0.08);
   cursor: pointer;
-  font-weight: 900;
+  font-weight: 400;
   padding: 10px 14px;
 }
 
@@ -154,7 +216,7 @@
   display: grid;
   gap: 8px;
   color: var(--color-primary-dark);
-  font-weight: 800;
+  font-weight: 400;
 }
 
 .admin-products__form input,
@@ -246,7 +308,7 @@
   color: var(--color-surface);
   background: var(--color-primary);
   cursor: pointer;
-  font-weight: 900;
+  font-weight: 400;
 }
 
 .admin-products__stock button:disabled {
@@ -265,7 +327,7 @@
   color: var(--color-primary-dark);
   background: rgba(200, 145, 61, 0.2);
   cursor: pointer;
-  font-weight: 900;
+  font-weight: 400;
   padding: 8px 12px;
 }
 
@@ -301,6 +363,19 @@
   }
 
   .admin-products__form-actions {
+    flex-direction: column;
+  }
+
+  .admin-products__confirm {
+    padding: 14px;
+  }
+
+  .admin-products__confirm-panel {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-products__confirm-actions {
     flex-direction: column;
   }
 }

@@ -4,6 +4,7 @@ import Navbar from './Components/Navbar'
 import Footer from './Components/Footer'
 import { AppContext } from './Context/AppContext'
 import Home from './Pages/Home'
+import Historia from './Pages/Historia'
 import Login from './Pages/Login'
 import RegistrarsePage from './Pages/Registrarse'
 import Contacto from './Pages/Contacto'
@@ -38,6 +39,7 @@ function App() {
       <main className="app">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/historia" element={<Historia />} />
           <Route path="/login" element={<Login />} />
           <Route path="/registrarse" element={<RegistrarsePage />} />
           <Route path="/contacto" element={<Contacto />} />
