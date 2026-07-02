@@ -21,24 +21,34 @@
     background-image: url('../../assets/barra_lenguaje2.png');
 }
 
-.bianco-label{
+.bianco-label {
+    position: absolute;
+    top: 0;
+    left: 87px;
+    z-index: 2;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100px;
+    min-width: 160px;
+    color: var(--secondary);
+    background-color: var(--bianco);
+    font-family: var(--font-brand);
     font-size: 40px;
-    margin-left: 87px;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
 .texto-bianco {
     width: min(82%, 400px);
     min-height: 0;
     margin: 0;
-    margin-top: 50px;
+    margin-top: 80px;
     margin-left: 85px;
     color: var(--secondary);
+    font-family: var(--font-base);
     font-size: clamp(25px, 2.2vw, 45px);
-    font-weight: 800;
+    font-weight: 400;
     line-height: 1.13;
     letter-spacing: 0;
 }
@@ -55,9 +65,17 @@
         height: 54px;
     }
 
+    .bianco-label {
+        left: clamp(34px, 11vw, 52px);
+        height: 54px;
+        min-width: 140px;
+        font-size: 27px;
+    }
+
     .texto-bianco {
         width: min(84%, 330px);
+        margin-top: 80px;
+        margin-left: 0;
         font-size: clamp(24px, 6.7vw, 28px);
-        line-height: 1.13;
     }
 }

@@ -17,7 +17,8 @@
   --color-wood: #5a2f1f;
   --shadow-soft: 0 20px 60px rgba(31, 23, 19, 0.16);
   --font-base: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-display: 'Arial Black', 'Noto Sans', Impact, sans-serif;
+  --font-brand: 'Arial Black', 'Noto Sans', Impact, sans-serif;
+  --font-display: var(--font-brand);
 
   color: var(--color-text);
   background: var(--color-bg);
@@ -84,3 +85,4 @@ img,
 svg {
   display: block;
 }
+

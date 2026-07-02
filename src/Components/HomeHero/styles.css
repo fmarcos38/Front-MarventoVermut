@@ -1,8 +1,8 @@
 .hero {
-  position: relative;
-  min-height: 100vh;/* calc(100vh - 140px); */
+  min-height: auto;/* calc(100vh - 140px); */
+  aspect-ratio: 2667 / 1707;
   margin-top: 0;
-  padding: 80px max(28px, calc((100vw - 1180px) / 2)) 78px;
+  padding: 0;
   color: var(--color-surface);
   /* Overlay para recuperar la version con textos:
   background:
@@ -109,9 +109,9 @@
 
 @media (max-width: 760px) {
   .hero {
-    min-height: 720px;
+    min-height: auto;
     margin-top: 0;
-    padding: 70px 22px 34px;
+    padding: 0;
     background-position: 58% center;
     flex-direction: column;
     align-items: flex-start;
@@ -132,3 +132,4 @@
     width: fit-content;
   }
 }
+

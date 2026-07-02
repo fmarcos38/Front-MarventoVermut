@@ -16,7 +16,6 @@ function Home() {
                 <HomeImgBianco/>                
                 <HomeTextBianco/>                
             </section>
-
             <section className="vermut-feature vermut-feature--rosso" aria-label="Marvento Rosso">
                 <HomeTextRosso/>
                 <HomeImgRosso/>

@@ -1,4 +1,4 @@
-import historiaImage from '../../assets/marvento-historia.jpg'
+import zocaloHistoria from '../../assets/zocalo_historia.png'
 import './styles.css'
 
 function Historia() {
@@ -6,27 +6,32 @@ function Historia() {
         <section className="historia-page">
             <div className="historia-page__text">
                 <div className="historia-page__content">
-                    <h1>Casa Talina</h1>
+                    <h1>Nuestra historia</h1>
 
                     <p>
-                        <strong>CASA TALINA</strong> es el proyecto que da origen a <strong>MARVENTO</strong> y a una
-                        colecci&oacute;n de marcas inspiradas en la tradici&oacute;n mediterr&aacute;nea,
-                        reinterpretadas desde la costa atl&aacute;ntica argentina. M&aacute;s que desarrollar
-                        productos, construye historias donde el origen, la cultura y el paisaje forman parte de
-                        una misma identidad.
+                        <strong>MARVENTO</strong> nace dentro de <strong>CASA TALINA</strong>, un proyecto inspirado en
+                        las ra&iacute;ces familiares y en el v&iacute;nculo entre dos costas: Montecorice, sobre el
+                        Mediterr&aacute;neo italiano, y Mar del Plata, frente al Atl&aacute;ntico argentino.
                     </p>
 
                     <p>
-                        Cada propuesta nace de un proceso de investigaci&oacute;n y desarrollo que combina herencia,
-                        calidad y una mirada contempor&aacute;nea. Un universo donde cada marca tiene su propia
-                        personalidad, pero comparte un mismo esp&iacute;ritu: crear productos con identidad, pensados
-                        para perdurar y ser compartidos.
+                        Durante generaciones, la elaboraci&oacute;n de licores y aperitivos form&oacute; parte de los
+                        encuentros familiares, una tradici&oacute;n transmitida con el mismo esp&iacute;ritu de compartir
+                        y agasajar. Con el tiempo, ese legado fue incorporando nuevas t&eacute;cnicas, nuevos
+                        bot&aacute;nicos y una mirada contempor&aacute;nea, sin perder el respeto por su origen.
+                    </p>
+
+                    <p>
+                        Hoy, <strong>MARVENTO</strong> representa una nueva etapa de esa historia. Un vermut que
+                        recupera la herencia mediterr&aacute;nea para reinterpretarla desde el Atl&aacute;ntico, dando
+                        forma a una propuesta con identidad propia, donde tradici&oacute;n e innovaci&oacute;n navegan
+                        en la misma direcci&oacute;n.
                     </p>
                 </div>
             </div>
 
-            <div className="historia-page__image">
-                <img src={historiaImage} alt="Escena Marvento vinculada a la historia de Casa Talina" />
+            <div className="historia-page__zocalo">
+                <img src={zocaloHistoria} alt="Marvento historia" />
             </div>
         </section>
     )
