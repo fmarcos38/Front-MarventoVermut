@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import { Link, NavLink } from 'react-router'
+import { Link, NavLink, useNavigate } from 'react-router'
 import { AppContext } from '../../Context/AppContext'
 import MenuHamburguesa from '../MenuHamburguesa'
 import marventoLogo from '../../assets/logo_alfa.png'
@@ -24,8 +24,11 @@ const adminLinks = [
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { userLog, cartItems } = useContext(AppContext)
+  const [isLogoutOpen, setIsLogoutOpen] = useState(false)
+  const navigate = useNavigate()
+  const { userLog, cartItems, logout } = useContext(AppContext)
   const puedeAdministrar = userLog?.roles?.some((rol) => ['ADMIN', 'EMPLEADO'].includes(rol))
+  const mostrarCarrito = !puedeAdministrar
   const cantidadCarrito = cartItems?.reduce((total, item) => total + Number(item.cantidad || 0), 0) || 0
 
   const toggleMenu = () => {
@@ -34,6 +37,21 @@ const Navbar = () => {
 
   const closeMenu = () => {
     setIsMenuOpen(false)
+  }
+
+  const openLogoutModal = () => {
+    closeMenu()
+    setIsLogoutOpen(true)
+  }
+
+  const closeLogoutModal = () => {
+    setIsLogoutOpen(false)
+  }
+
+  const handleLogout = () => {
+    logout()
+    setIsLogoutOpen(false)
+    navigate('/')
   }
 
   return (
@@ -91,24 +109,50 @@ const Navbar = () => {
           </nav>
 
           <div className="navbar__actions">
-            <Link className="navbar__cart" to="/carrito" aria-label="Carrito" onClick={closeMenu}>
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="9" cy="20" r="1.7" />
-                <circle cx="18" cy="20" r="1.7" />
-                <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.5L21 8H7" />
-              </svg>
-              {cantidadCarrito > 0 && <span className="navbar__cart-count">{cantidadCarrito}</span>}
-            </Link>
+            {mostrarCarrito && (
+              <Link className="navbar__cart" to="/carrito" aria-label="Carrito" onClick={closeMenu}>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="9" cy="20" r="1.7" />
+                  <circle cx="18" cy="20" r="1.7" />
+                  <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.5L21 8H7" />
+                </svg>
+                {cantidadCarrito > 0 && <span className="navbar__cart-count">{cantidadCarrito}</span>}
+              </Link>
+            )}
 
-            <Link className="navbar__login" to="/login" aria-label="Login" onClick={closeMenu}>
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="12" cy="8" r="4" />
-                <path d="M4 21a8 8 0 0 1 16 0" />
-              </svg>
-            </Link>
+            {userLog ? (
+              <button className="navbar__logout" type="button" aria-label="Cerrar sesion" onClick={openLogoutModal}>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M10 6V4h9v16h-9v-2" />
+                  <path d="M15 12H3" />
+                  <path d="m7 8-4 4 4 4" />
+                </svg>
+              </button>
+            ) : (
+              <Link className="navbar__login" to="/login" aria-label="Login" onClick={closeMenu}>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M4 21a8 8 0 0 1 16 0" />
+                </svg>
+              </Link>
+            )}
           </div>
         </div>
       </header>
+
+      {isLogoutOpen && (
+        <div className="logout-modal" role="dialog" aria-modal="true" aria-labelledby="logout-title">
+          <button className="logout-modal__backdrop" type="button" aria-label="Cancelar cierre de sesion" onClick={closeLogoutModal} />
+          <div className="logout-modal__panel">
+            <h2 id="logout-title">Cerrar sesion</h2>
+            <p>Vas a salir de tu cuenta en este dispositivo.</p>
+            <div className="logout-modal__actions">
+              <button type="button" onClick={closeLogoutModal}>Cancelar</button>
+              <button type="button" onClick={handleLogout}>Cerrar sesion</button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }

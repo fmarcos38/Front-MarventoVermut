@@ -1,4 +1,5 @@
 import zocaloHistoria from '../../assets/zocalo_historia.png'
+import zocaloHistoriaMobile from '../../assets/HistoriaMobile.png'
 import './styles.css'
 
 function Historia() {
@@ -31,7 +32,10 @@ function Historia() {
             </div>
 
             <div className="historia-page__zocalo">
-                <img src={zocaloHistoria} alt="Marvento historia" />
+                <picture>
+                    <source media="(max-width: 760px)" srcSet={zocaloHistoriaMobile} />
+                    <img src={zocaloHistoria} alt="Marvento historia" />
+                </picture>
             </div>
         </section>
     )

@@ -154,7 +154,7 @@
 .navbar__actions {
   grid-column: 3;
   justify-self: end;
-  display: none !important;
+  display: flex;
   align-items: center;
   gap: 8px;
 }
@@ -175,7 +175,8 @@
 
 .navbar__icon-link,
 .navbar__cart,
-.navbar__login {
+.navbar__login,
+.navbar__logout {
   border: 0;
   width: 28px;
   height: 28px;
@@ -191,14 +192,16 @@
 }
 
 .navbar__cart:hover,
-.navbar__login:hover {
+.navbar__login:hover,
+.navbar__logout:hover {
   color: var(--secondary);
   background: rgba(240, 216, 172, 0.12);
 }
 
 .navbar__icon-link svg,
 .navbar__cart svg,
-.navbar__login svg {
+.navbar__login svg,
+.navbar__logout svg {
   width: 18px;
   height: 18px;
 }
@@ -222,7 +225,8 @@
 }
 
 .navbar__cart svg,
-.navbar__login svg {
+.navbar__login svg,
+.navbar__logout svg {
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -410,14 +414,16 @@
   }
 
   .navbar__cart,
-  .navbar__login {
+  .navbar__login,
+  .navbar__logout {
     width: 34px;
     height: 34px;
     color: var(--secondary);
   }
 
   .navbar__cart svg,
-  .navbar__login svg {
+  .navbar__login svg,
+  .navbar__logout svg {
     width: 19px;
     height: 19px;
   }

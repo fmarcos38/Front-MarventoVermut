@@ -4,9 +4,6 @@
 
 .historia-page__text {
     min-height: 430px;
-}
-
-.historia-page__text {
     padding: clamp(58px, 8vw, 94px) max(28px, calc((100vw - 1180px) / 2));
     color: var(--secondary);
     display: flex;
@@ -66,6 +63,10 @@
 .historia-page__zocalo {
     width: 100%;
     background: var(--primary);
+}
+
+.historia-page__zocalo picture {
+    display: block;
 }
 
 .historia-page__zocalo img {

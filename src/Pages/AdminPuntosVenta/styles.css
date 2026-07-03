@@ -1,6 +1,11 @@
 .admin-points {
   width: min(1120px, calc(100% - 32px));
+  min-height: 100%;
   margin: 54px auto 90px;
+  color: var(--secondary);
+  background: var(--primary);
+  box-shadow: 0 0 0 100vmax var(--primary);
+  clip-path: inset(0 -100vmax);
 }
 
 .admin-points__header {
@@ -21,7 +26,7 @@
 
 .admin-points__header h1 {
   margin: 8px 0;
-  color: var(--color-primary);
+  color: var(--secondary);
   font-family: var(--font-display);
   font-size: clamp(34px, 6vw, 62px);
   line-height: 0.96;
@@ -29,7 +34,7 @@
 
 .admin-points__header p {
   max-width: 620px;
-  color: var(--color-muted);
+  color: rgba(239, 219, 178, 0.74);
   line-height: 1.6;
 }
 
@@ -54,11 +59,23 @@
 .admin-points__header-actions button,
 .admin-points__form-actions button:last-child,
 .admin-points__actions button:first-child {
+  color: var(--primary);
+  background: var(--secondary);
+}
+
+.admin-points__header-actions a,
+.admin-points__form-actions button:first-child,
+.admin-points__actions button:last-child {
+  color: var(--secondary);
+  background: rgba(239, 219, 178, 0.14);
+}
+
+.admin-points__form-actions button:last-child,
+.admin-points__actions button:first-child {
   color: var(--color-surface);
   background: var(--color-primary);
 }
 
-.admin-points__header-actions a,
 .admin-points__form-actions button:first-child,
 .admin-points__actions button:last-child {
   color: var(--color-primary-dark);

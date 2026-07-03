@@ -35,6 +35,12 @@ const categoriaLabels = {
     bar: 'Vermuteria / Bar',
 }
 
+const getMapsUrl = (punto) => {
+    if (punto.maps) return punto.maps
+
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${punto.direccion}, ${punto.localidad}`)}`
+}
+
 const getEmbedUrl = (punto) => {
     const query = punto
         ? `${punto.direccion}, ${punto.localidad}, Buenos Aires, Argentina`
@@ -47,10 +53,28 @@ const getEmbedUrl = (punto) => {
 const PuntosDeVenta = () => {
     const [puntosDeVenta, setPuntosDeVenta] = useState(fallbackPuntos)
     const [selectedId, setSelectedId] = useState('')
+    const [searchTerm, setSearchTerm] = useState('')
     const selectedPoint = useMemo(
         () => puntosDeVenta.find((punto) => punto.id === selectedId) || null,
         [puntosDeVenta, selectedId]
     )
+    const filteredPuntos = useMemo(() => {
+        const normalizedSearch = searchTerm.trim().toLowerCase()
+
+        if (!normalizedSearch) return puntosDeVenta
+
+        return puntosDeVenta.filter((punto) => {
+            const searchableText = [
+                punto.nombre,
+                punto.categoria,
+                categoriaLabels[punto.categoria],
+                punto.direccion,
+                punto.localidad,
+            ].filter(Boolean).join(' ').toLowerCase()
+
+            return searchableText.includes(normalizedSearch)
+        })
+    }, [puntosDeVenta, searchTerm])
 
     useEffect(() => {
         const fetchPuntos = async () => {
@@ -84,6 +108,18 @@ const PuntosDeVenta = () => {
             </div>
 
             <div className="sales-points__layout">
+                <div className="sales-points__mobile-search" role="search">
+                    <label htmlFor="sales-point-search">Buscar por zona, direccion o comercio</label>
+                    <input
+                        id="sales-point-search"
+                        type="search"
+                        value={searchTerm}
+                        onChange={(event) => setSearchTerm(event.target.value)}
+                        placeholder="Ej: Alem, Cabrales, Balcarce"
+                    />
+                    <p>{filteredPuntos.length} lugares disponibles</p>
+                </div>
+
                 <div className="sales-map" aria-label="Mapa de puntos de venta">
                     <div className="sales-map__canvas">
                         <iframe
@@ -101,7 +137,7 @@ const PuntosDeVenta = () => {
                                 <span>{categoriaLabels[selectedPoint.categoria] || selectedPoint.categoria}</span>
                                 <strong>{selectedPoint.nombre}</strong>
                                 <p>{selectedPoint.direccion}, {selectedPoint.localidad}</p>
-                                <a href={selectedPoint.maps} target="_blank" rel="noreferrer">
+                                <a href={getMapsUrl(selectedPoint)} target="_blank" rel="noreferrer">
                                     Abrir en Google Maps
                                 </a>
                             </>
@@ -116,12 +152,13 @@ const PuntosDeVenta = () => {
                 </div>
 
                 <aside className="sales-points__list" aria-label="Listado de comercios">
-                    {puntosDeVenta.map((punto, index) => (
+                    {filteredPuntos.map((punto, index) => (
                         <PuntoDeVentaCard
                             index={index}
                             isActive={selectedId === punto.id}
                             punto={{
                                 ...punto,
+                                maps: getMapsUrl(punto),
                                 zona: categoriaLabels[punto.categoria] || punto.categoria,
                                 horario: `${punto.localidad} - Consultar disponibilidad`,
                             }}
@@ -129,6 +166,11 @@ const PuntosDeVenta = () => {
                             onSelect={() => setSelectedId(punto.id)}
                         />
                     ))}
+                    {!filteredPuntos.length && (
+                        <div className="sales-points__empty">
+                            No encontramos puntos de venta con esa busqueda.
+                        </div>
+                    )}
                 </aside>
             </div>
         </section>

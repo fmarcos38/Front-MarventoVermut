@@ -85,6 +85,7 @@ const AppProvider = ({ children }) => {
     };
     const logout = () => {
         localStorage.removeItem('userData');
+        localStorage.removeItem('dataUser');
         setUserLog(null);
         setNombreUser('');
         setIsAuthenticated(false);

@@ -1,4 +1,5 @@
 import casaTalinaImage from '../../assets/Casa_Talina.png'
+import casaTalinaMobileImage from '../../assets/CasaTalinaMobile.png'
 import './styles.css'
 
 function CasaTalina() {
@@ -25,7 +26,10 @@ function CasaTalina() {
             </div>
 
             <div className="casa-talina-page__image">
-                <img src={casaTalinaImage} alt="Casa Talina" />
+                <picture>
+                    <source media="(max-width: 760px)" srcSet={casaTalinaMobileImage} />
+                    <img src={casaTalinaImage} alt="Casa Talina" />
+                </picture>
             </div>
         </section>
     )
