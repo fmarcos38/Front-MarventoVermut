@@ -20,6 +20,8 @@
     width: 100%;
     height: 100px;
     background-image: url('../../assets/barra_lenguaje2.png');
+    background-repeat: repeat-x;
+    background-size: auto 76px;
 }
 
 .rosso-label {
@@ -40,12 +42,27 @@
     text-transform: uppercase;
 }
 
-.texto-rosso {
+.rosso-copy {
     width: min(82%, 400px);
     min-height: 0;
-    margin: 0;
     margin-top: 80px;
     margin-left: 85px;
+}
+
+.rosso-meta {
+    display: block;
+    margin-bottom: 22px;
+    color: rgba(240, 216, 172, 0.74);
+    font-family: var(--font-base);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.texto-rosso {
+    margin: 0;
     color: var(--secondary);
     font-family: var(--font-base);
     font-size: clamp(25px, 2.2vw, 45px);
@@ -54,15 +71,21 @@
     letter-spacing: 0;
 }
 
+.texto-rosso + .texto-rosso {
+    margin-top: 24px;
+}
+
 @media (max-width: 760px) {
     .cont-text-rosso {
         width: 100%;
         min-height: 620px;
-        padding: 78px clamp(34px, 11vw, 52px) 42px;
+        padding: 64px clamp(34px, 11vw, 52px) 42px;
     }
 
     .guarda-rosso {
         height: 54px;
+        background-repeat: repeat-x;
+        background-size: auto 42px;
     }
 
     .rosso-label {
@@ -72,10 +95,28 @@
         font-size: 27px;
     }
 
-    .texto-rosso {
+    .rosso-copy {
         width: min(84%, 330px);
+        margin-top: 46px;
         margin-left: 0;
-        font-size: clamp(24px, 6.7vw, 28px);
+    }
+
+    .rosso-meta {
+        margin-bottom: 18px;
+        font-size: 10px;
+        letter-spacing: 0.1em;
+    }
+
+    .texto-rosso {
+        font-size: clamp(21px, 5.8vw, 25px);
+    }
+
+    .texto-rosso + .texto-rosso {
+        margin-top: 18px;
     }
 }
+
+
+
+
 

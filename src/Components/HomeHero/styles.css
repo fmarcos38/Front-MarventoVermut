@@ -14,9 +14,19 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100% auto;
-  display: flex;
-  align-items: flex-end;
+  display: block;
   overflow: hidden;
+}
+
+.hero__picture {
+  display: block;
+}
+
+.hero__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 .hero__content {
@@ -109,13 +119,13 @@
 
 @media (max-width: 760px) {
   .hero {
-    min-height: auto;
-    margin-top: 0;
-    padding: 0;
-    background-position: 58% center;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-end;
+    aspect-ratio: auto;
+    background-image: none;
+  }
+
+  .hero__image {
+    width: 100%;
+    height: auto;
   }
 
   .hero__content {
@@ -132,4 +142,3 @@
     width: fit-content;
   }
 }
-

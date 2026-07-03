@@ -2,8 +2,8 @@
   width: 44px;
   height: 44px;
   border: 0;
-  border-radius: 999px;
-  background: rgba(240, 216, 172, 0.12);
+  /* border-radius: 999px; */
+  background: var(--primary);
   display: none;
   align-items: center;
   justify-content: center;
@@ -39,3 +39,4 @@
     display: inline-flex;
   }
 }
+

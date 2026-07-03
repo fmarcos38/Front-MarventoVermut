@@ -17,12 +17,12 @@
     max-height: none;
   }
 
-  .vermut-feature--rosso .vermut-feature__text {
-    order: 2;
+  .vermut-feature--rosso .cont-rosso-img {
+    order: 1;
   }
 
-  .vermut-feature--rosso .vermut-feature__photo {
-    order: 1;
+  .vermut-feature--rosso .cont-text-rosso {
+    order: 2;
   }
 
   .vermut-feature__photo {
@@ -62,3 +62,4 @@
     line-height: 1.12;
   }
 }
+

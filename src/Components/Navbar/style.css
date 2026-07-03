@@ -44,6 +44,10 @@
   padding: 0 max(20px, calc((100vw - 1180px) / 2));
 }
 
+.navbar__mobile-links {
+  display: none;
+}
+
 .navbar__nav {
   grid-column: 2;
   display: flex;
@@ -141,6 +145,10 @@
 
 .navbar__admin-link:hover {
   background: rgba(240, 216, 172, 0.12);
+}
+
+.navbar__menu-action {
+  display: none !important;
 }
 
 .navbar__actions {
@@ -303,9 +311,41 @@
 
 @media (max-width: 900px) {
   .navbar__bar {
-    grid-template-columns: 1fr auto;
+    position: relative;
     min-height: 48px;
-    padding: 0 14px;
+    grid-template-columns: 1fr 2.6fr 1fr;
+    column-gap: 0;
+    padding: 0 10px;
+  }
+
+  .navbar__menu-action {
+    grid-column: 1;
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .navbar__mobile-links {
+    grid-column: 2;
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(3, max-content);
+    align-items: stretch;
+    justify-content: center;
+    column-gap: clamp(12px, 3vw, 18px);
+  }
+
+  .navbar__mobile-links .navbar__link {
+    min-height: 48px;
+    padding: 8px 0;
+    display: grid;
+    place-items: center;
+    font-size: clamp(8px, 2.15vw, 10px);
+    letter-spacing: 0.01em;
+    line-height: 1.08;
+    text-align: center;
+    white-space: normal;
   }
 
   .navbar__nav {
@@ -325,6 +365,7 @@
     transition:
       opacity 0.2s ease,
       transform 0.2s ease;
+    z-index: 30;
   }
 
   .navbar__nav--open {
@@ -333,7 +374,7 @@
     transform: translateY(0);
   }
 
-  .navbar__link,
+  .navbar__nav .navbar__link,
   .navbar__admin-label,
   .navbar__admin-link {
     padding: 13px 8px;
@@ -361,15 +402,30 @@
   }
 
   .navbar__actions {
-    grid-column: 2;
+    grid-column: 3;
     display: flex !important;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+
+  .navbar__cart,
+  .navbar__login {
+    width: 34px;
+    height: 34px;
+    color: var(--secondary);
+  }
+
+  .navbar__cart svg,
+  .navbar__login svg {
+    width: 19px;
+    height: 19px;
   }
 
   .navbar__greeting {
     display: none;
   }
 }
-
 @media (max-width: 560px) {
   .navbar__top {
     min-height: 86px;
@@ -384,6 +440,16 @@
     flex-direction: column-reverse;
   }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

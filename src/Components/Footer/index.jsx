@@ -53,38 +53,37 @@ const Footer = () => {
     <footer className="footer" id="footer">
       <div className="footer__inner">
         <section className="footer__column footer__location" aria-label="Casa Talina">
-          <div className="footer__copy">
-            <h2>Casa Talina<span aria-hidden="true">{'\u00ae'}</span></h2>
-            <p>
-              Bolivar 6171, Mar del Plata
-              <br />
-              Buenos Aires, Argentina
-            </p>
-          </div>
-          <div className="footer__rule" />
+          <span className="footer__eyebrow">Casa Talina</span>
+          <h2>Casa Talina<span aria-hidden="true">&reg;</span></h2>
+          <p>
+            Bolivar 6171, Mar del Plata
+            <br />
+            Buenos Aires, Argentina
+          </p>
         </section>
 
         <section className="footer__column footer__social" aria-label="Redes sociales">
-          {socialLinks.map((link) => (
-            <a href={link.href} target="_blank" rel="noreferrer" key={`${link.icon}-${link.label}`}>
-              <span className="footer__icon">
-                <SocialIcon name={link.icon} />
-              </span>
-              {link.label}
-            </a>
-          ))}
+          <span className="footer__eyebrow">Contacto</span>
+          <div className="footer__social-grid">
+            {socialLinks.map((link) => (
+              <a href={link.href} target="_blank" rel="noreferrer" key={`${link.icon}-${link.label}`}>
+                <span className="footer__icon">
+                  <SocialIcon name={link.icon} />
+                </span>
+                {link.label}
+              </a>
+            ))}
+          </div>
         </section>
 
         <section className="footer__column footer__payments" aria-label="Medios de pago">
-          <div className="footer__copy">
-            <p>
-              Todos los medios de pago
-              <br />
-              Compra segura
-            </p>
-            <a href="mailto:info@marvento.com.ar">info@marvento.com.ar</a>
-          </div>
-          <div className="footer__rule" />
+          <span className="footer__eyebrow">Compra</span>
+          <p>
+            Todos los medios de pago
+            <br />
+            Compra segura
+          </p>
+          <a href="mailto:info@marvento.com.ar">info@marvento.com.ar</a>
         </section>
       </div>
 
@@ -96,5 +95,3 @@ const Footer = () => {
 }
 
 export default Footer
-
-

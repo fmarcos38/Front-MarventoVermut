@@ -1,8 +1,14 @@
+import heroImage from '../../assets/marvento-hero-nautico.jpg';
+import heroMobileImage from '../../assets/HomeHeroResponsive.png';
 import './styles.css';
 
 function HomeHero() {
     return (
         <section className="hero">
+            <picture className="hero__picture">
+                <source media="(max-width: 760px)" srcSet={heroMobileImage} />
+                <img className="hero__image" src={heroImage} alt="Marvento Vermut" />
+            </picture>
             {/*
                     <div className="hero__content">
                         <span className="hero__eyebrow">Casa Talina presenta</span>
