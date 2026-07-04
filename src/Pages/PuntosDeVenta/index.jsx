@@ -54,6 +54,7 @@ const PuntosDeVenta = () => {
     const [puntosDeVenta, setPuntosDeVenta] = useState(fallbackPuntos)
     const [selectedId, setSelectedId] = useState(fallbackPuntos[0]?.id || '')
     const [searchTerm, setSearchTerm] = useState('')
+    const [isMapVisible, setIsMapVisible] = useState(false)
     const selectedPoint = useMemo(
         () => puntosDeVenta.find((punto) => punto.id === selectedId) || null,
         [puntosDeVenta, selectedId]
@@ -97,6 +98,20 @@ const PuntosDeVenta = () => {
         }
 
         fetchPuntos()
+    }, [])
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return undefined
+
+        const mapVisibilityQuery = window.matchMedia('(min-width: 901px)')
+        const updateMapVisibility = () => setIsMapVisible(mapVisibilityQuery.matches)
+
+        updateMapVisibility()
+        mapVisibilityQuery.addEventListener('change', updateMapVisibility)
+
+        return () => {
+            mapVisibilityQuery.removeEventListener('change', updateMapVisibility)
+        }
     }, [])
 
     return (
@@ -155,7 +170,7 @@ const PuntosDeVenta = () => {
                     {filteredPuntos.map((punto, index) => (
                         <PuntoDeVentaCard
                             index={index}
-                            isActive={selectedId === punto.id}
+                            isActive={isMapVisible && selectedId === punto.id}
                             punto={{
                                 ...punto,
                                 maps: getMapsUrl(punto),

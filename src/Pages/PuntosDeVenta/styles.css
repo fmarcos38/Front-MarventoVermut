@@ -343,6 +343,21 @@
         background: rgba(0, 42, 58, 0.34);
     }
 
+    .sales-point--active {
+        border-color: rgba(239, 219, 178, 0.32);
+        color: var(--secondary);
+        background: rgba(0, 42, 58, 0.34);
+    }
+
+    .sales-point--active span {
+        color: var(--bianco);
+    }
+
+    .sales-point--active small,
+    .sales-point--active em {
+        color: rgba(239, 219, 178, 0.74);
+    }
+
     .sales-point__select {
         padding: 18px;
     }
@@ -364,8 +379,7 @@
         text-transform: uppercase;
     }
 
-    .sales-point:hover .sales-point__maps,
-    .sales-point--active .sales-point__maps {
+    .sales-point:hover .sales-point__maps {
         color: var(--secondary);
         background: var(--primary);
     }
