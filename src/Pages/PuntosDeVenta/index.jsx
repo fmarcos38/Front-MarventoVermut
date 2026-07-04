@@ -52,7 +52,7 @@ const getEmbedUrl = (punto) => {
 
 const PuntosDeVenta = () => {
     const [puntosDeVenta, setPuntosDeVenta] = useState(fallbackPuntos)
-    const [selectedId, setSelectedId] = useState('')
+    const [selectedId, setSelectedId] = useState(fallbackPuntos[0]?.id || '')
     const [searchTerm, setSearchTerm] = useState('')
     const selectedPoint = useMemo(
         () => puntosDeVenta.find((punto) => punto.id === selectedId) || null,
@@ -88,11 +88,11 @@ const PuntosDeVenta = () => {
 
                 if (Array.isArray(data.puntos) && data.puntos.length) {
                     setPuntosDeVenta(data.puntos)
-                    setSelectedId('')
+                    setSelectedId(data.puntos[0]?.id || '')
                 }
             } catch {
                 setPuntosDeVenta(fallbackPuntos)
-                setSelectedId('')
+                setSelectedId(fallbackPuntos[0]?.id || '')
             }
         }
 
